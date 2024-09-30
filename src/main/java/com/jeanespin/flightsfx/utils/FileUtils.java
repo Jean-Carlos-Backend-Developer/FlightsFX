@@ -36,12 +36,28 @@ public class FileUtils {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H:mm");
 
         try (PrintWriter pw = new PrintWriter("flights.txt")) {
-            vuelos.stream().forEach(v -> pw.println(v.getNumVuelo() + ";" +
+            vuelos.forEach(v -> pw.println(v.getNumVuelo() + ";" +
                     v.getDestino() + ";" +
                     v.getSalida().format(dateTimeFormatter) + ";" +
                     v.getDuracion().format(timeFormatter) + ";"));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void deleteFlight(String numVuelo) {
+        //Cargar los vuelos desde el fichero
+        List<Flight> vuelos = loadFlights();
+
+        if (vuelos != null) {
+            //Filtrar lista para borrar el vuelo con el número especificado
+            vuelos = vuelos.stream()
+                    .filter(v -> !v.getNumVuelo().equals(numVuelo))
+                    .collect(Collectors.toList());
+            //Guardar la lista actualizada en el fichero
+            saveFlights(vuelos);
+        } else {
+            MessageUtils.showError("Error", "Error al cargar los vuelos");
         }
     }
 }

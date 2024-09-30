@@ -24,6 +24,8 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
+import static com.jeanespin.flightsfx.utils.FileUtils.deleteFlight;
+
 public class FXMLMainViewController {
     @FXML
     private Button btnAdd;
@@ -63,8 +65,8 @@ public class FXMLMainViewController {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H:mm");
 
-        if (txtDestino.getText().equals("") || txtDuracion.getText().equals("") ||
-                txtSalida.getText().equals("") || txtNumVuelo.getText().equals("")) {
+        if (txtDestino.getText().isEmpty() || txtDuracion.getText().isEmpty() ||
+                txtSalida.getText().isEmpty() || txtNumVuelo.getText().isEmpty()) {
             MessageUtils.showError("Error añadiendo datos","Ninguna fila debe estar vacía.");
         } else {
             try {
@@ -102,8 +104,11 @@ public class FXMLMainViewController {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK){
+                FileUtils.deleteFlight(selectedFlight.getNumVuelo());
+
+                //Actualizar la lista de vuelos en la interfaz gráfica
                 vuelos.remove(selectedFlight);
-                FileUtils.saveFlights(vuelos);
+                tableFlights.refresh();
             }
         }
         else {
@@ -138,17 +143,16 @@ public class FXMLMainViewController {
                 break;
             case 2: //Mostrar vuelos largos.
                 ObservableList<Flight> vuelosLargos = vuelos.stream()
-                        .filter(v -> v.getDuracion().toSecondOfDay() > 3 * 3600) //Filtrar los vuelos cuya duración sea mayor a 3 horas (3 * 3600 segundos).
+                        .filter(v -> v.getDuracion().toSecondOfDay() > 5 * 3600) //Filtrar los vuelos cuya duración sea mayor a 5 horas (5 * 3600 segundos).
                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
                 tableFlights.setItems(vuelosLargos);
                 break;
             case 3: //Mostrar los siguientes 5 vuelos.
                 DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-                String fechaFiltrar = "10/10/2017 00:00"; //Fecha para filtrar vuelos con esa fecha específica
-                LocalDateTime fechaFiltrarParseada = LocalDateTime.parse(fechaFiltrar,dateTimeFormatter);
+                LocalDateTime fechaFiltrar = LocalDateTime.now();
 
                 ObservableList<Flight> vuelosProximos = vuelos.stream()
-                        .filter(v -> v.getSalida().isAfter(fechaFiltrarParseada)) //Filtrar los vuelos cuya fecha sea después de la fecha que le paso.
+                        .filter(v -> v.getSalida().isAfter(fechaFiltrar)) //Filtrar los vuelos cuya fecha sea después de la fecha que le paso.
                         .limit(5)
                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
                 tableFlights.setItems(vuelosProximos);
@@ -199,9 +203,9 @@ public class FXMLMainViewController {
                         "Mostrar duración media de los vuelos.")
         );
 
-        //Añadir vuelos a la TableView
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
+        //Añadir vuelos a la TableView
         vuelos = FXCollections.observableArrayList(FileUtils.loadFlights());
         colNumVuelo.setCellValueFactory(new PropertyValueFactory("numVuelo"));
         colDestino.setCellValueFactory(new PropertyValueFactory("destino"));
