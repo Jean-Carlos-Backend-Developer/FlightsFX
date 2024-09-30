@@ -26,22 +26,22 @@ __Uso__
 __Capturas de Pantalla__
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/b2babb33-51aa-421a-b849-2778af6e79b3">
+  <img src="https://github.com/user-attachments/assets/b2babb33-51aa-421a-b849-2778af6e79b3" alt="image" width="1524" height="1080">
   <p><em>Lista de vuelos</em></p>
 </div>
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/e55a44dc-b3af-478d-b754-a0d352baf11e">
+  <img src="https://github.com/user-attachments/assets/e55a44dc-b3af-478d-b754-a0d352baf11e"  alt="image" width="1524" height="1080">
   <p><em>Añadir vuelo</em></p>
 </div>
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/99a1efe3-ff82-41e0-b73b-081a564cf3a5">
+  <img src="https://github.com/user-attachments/assets/99a1efe3-ff82-41e0-b73b-081a564cf3a5"  alt="image" width="1524" height="1080">
   <p><em>Filtro de proximos 5 vuelos</em></p>
 </div>
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/dad127bb-9627-4600-8ba8-efa51c29e7b0">
+  <img src="https://github.com/user-attachments/assets/dad127bb-9627-4600-8ba8-efa51c29e7b0"  alt="image" width="1524" height="1080">
   <p><em>Gráfico de vuelos por ciudad</em></p>
 </div>
 
